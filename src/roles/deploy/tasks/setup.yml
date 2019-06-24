@@ -1,0 +1,17 @@
+---
+# 1.确保deploy目录存在 e.g./home/q/system
+# 2.确保pkgs目录存在   e.g./home/q/pkgs
+
+- stat: path={{ deploy_dir }}
+  register: st
+
+- name:  Ensure deployment base path exists
+  file: state=directory recurse=no path={{ deploy_dir }} owner={{ruser}} group={{ruser}}
+  when: st.stat.atime is not defined
+
+- stat: path={{ pkgs_dir }}
+  register: st
+
+- name:  Ensure pkgs path exists
+  file: state=directory recurse=no path={{ pkgs_dir }} owner={{ruser}} group={{ruser}}
+  when: st.stat.atime is not defined

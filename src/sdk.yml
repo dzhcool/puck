@@ -1,0 +1,6 @@
+---
+- name:  部署项目的基本配置， 轻易不要修改
+  hosts: '{{ env }}'
+  gather_facts: no
+  roles:
+    - { role: sdk }

@@ -1,0 +1,19 @@
+---
+# 1. 执行before cmd脚本
+# 2. 执行before rg 命令
+
+- name: execute shell command *before_cmd*
+  command: /bin/sh  {{ before_cmd }} chdir="{{ pkgs_dir }}/{{ deploy_name }}"
+  become: yes
+  when: before_cmd is defined and before_cmd != ''
+
+- stat: path={{ deploy_dir }}/{{ prj_name }}
+  become: yes
+  become_user: "{{ruser}}"
+  register: st
+
+- name: execute *rg stop,clean*
+  command: /data/x/tools/rigger-ng/rg stop,clean chdir={{ deploy_dir }}/{{ prj_name }}
+  become: yes
+  become_method: sudo
+  when: deploy == 'pub' and st.stat.islnk is defined and env is defined and env != '' and sys is defined and sys != ''

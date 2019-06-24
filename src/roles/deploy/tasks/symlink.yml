@@ -1,0 +1,4 @@
+---
+# 建立软连接
+- name: Change softlink to new release
+  file: state=link path={{ deploy_dir }}/{{ prj_name }} src="{{ pkgs_dir }}/{{ deploy_name }}" owner={{ruser}} group={{ruser}}

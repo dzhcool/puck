@@ -1,0 +1,18 @@
+---
+- name:  部署项目的基本配置， 轻易不要修改
+  hosts: '{{ env }}'
+  gather_facts: no
+  roles:
+    - { role: deploy }
+ # vars:
+ #   deploy: '{{ deploy }}'              #部署方式 pub | patch
+ #   deploy_dir: '{{ deploy_dir }}'      #部署目录 /home/q/system | /home/q/php | /home/q/tools
+ #   deploy_name: '{{ deploy_name }}'    #部署文件名称 [prj_name]-[version]-[deploy]-[ts]
+ #   prj_name: '{{ prj_name }}'          #工程名称 project_name
+ #   pkgs_dir: '{{ pkgs_dir }}'          #package目录 /home/q/pkgs
+ #   local_path: '{{ local_path }}'      #本地打包目录
+ #   before_cmd: '{{ before_cmd }}'      #before shell hook
+ #   before_rg: '{{ before_rg }}'        #before rigger cmd
+ #   after_cmd: '{{ after_cmd }}'        #after shell hook
+ #   after_rg: '{{ after_rg }}'          #after rigger cmd
+ #   ruser: '{{ ruser }}'    #远端机器user

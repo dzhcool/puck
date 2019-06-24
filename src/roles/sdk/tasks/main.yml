@@ -1,0 +1,28 @@
+---
+- stat: path={{ deploy_dir }}
+  register: st
+
+- name:  Ensure deployment base path exists
+  file: state=directory recurse=no path={{ deploy_dir }} owner={{ruser}} group={{ruser}}
+  when: st.stat.atime is not defined
+
+- stat: path={{ pkgs_dir }}
+  register: st
+
+- name:  Ensure pkgs path exists
+  file: state=directory recurse=no path={{ pkgs_dir }} owner={{ruser}} group={{ruser}}
+  when: st.stat.atime is not defined
+
+- name: copy pkgs
+  copy: src={{ local_path }}/{{ prj_name }}/{{ deploy_name }}.tgz dest={{ pkgs_dir }}/ owner={{ruser}} group={{ruser}}
+
+- name: extract pkgs
+  command: /bin/tar zxf  {{ pkgs_dir }}/{{ deploy_name }}.tgz chdir={{ pkgs_dir }}
+
+- name: Change softlink to new release
+  file: state=link path={{ deploy_dir }}/{{ prj_name }}_sdk src="{{ pkgs_dir }}/{{ deploy_name }}" owner={{ruser}} group={{ruser}}
+
+- name: execute shell command *sdk_cmd*
+  command: /bin/sh  {{ sdk_cmd }} chdir={{ deploy_dir }}/{{ prj_name }}_sdk
+  become: yes
+  when: sdk_cmd is defined and sdk_cmd != ''

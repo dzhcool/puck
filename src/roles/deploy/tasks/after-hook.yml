@@ -1,0 +1,21 @@
+---
+# 1. 若为pub,   执行after rg命令
+# 2. 若为patch，执行reload rg命令
+# 3. 执行after cmd脚本
+
+- name: execute *rg conf,start*
+  command: /data/x/tools/rigger-ng/rg conf,start -e "{{ env }}" -s "{{ sys }}"  chdir={{ deploy_dir }}/{{ prj_name }}
+  become: yes
+  become_method: sudo
+  when: deploy == 'pub' and env is defined and env != '' and sys is defined and sys != ''
+
+- name: execute *rg conf,reload*
+  command: /data/x/tools/rigger-ng/rg reconf,restart -e "{{ env }}" -s "{{ sys }}" chdir={{ deploy_dir }}/{{ prj_name }}
+  become: yes
+  become_method: sudo
+  when: deploy == 'patch' and env is defined and env != '' and sys is defined and sys != ''
+
+- name: execute shell command *after_cmd*
+  command: /bin/sh  {{ after_cmd }} chdir="{{ deploy_dir }}/{{ prj_name }}"
+  become: yes
+  when: after_cmd is defined and after_cmd != ''

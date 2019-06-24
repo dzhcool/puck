@@ -1,0 +1,10 @@
+---
+- include: setup.yml
+
+- include: update-code.yml
+
+- include: before-hook.yml
+
+- include: symlink.yml
+
+- include: after-hook.yml
