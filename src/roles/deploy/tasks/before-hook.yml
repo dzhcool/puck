@@ -13,7 +13,9 @@
   register: st
 
 - name: execute *rg stop,clean*
-  command: /data/x/tools/rigger-ng/rg stop,clean chdir={{ deploy_dir }}/{{ prj_name }}
+  # command: /data/x/tools/rigger-ng/rg stop,clean chdir={{ deploy_dir }}/{{ prj_name }}
+  # stop时候不进行clean，解决平滑重启fpm较慢时候pid提前被清理
+  command: /data/x/tools/rigger-ng/rg stop chdir={{ deploy_dir }}/{{ prj_name }}
   become: yes
   become_method: sudo
   when: deploy == 'pub' and st.stat.islnk is defined and env is defined and env != '' and sys is defined and sys != ''
